@@ -88,52 +88,50 @@
 <table class="info-table">
   <tr>
     <th>项目名称</th>
-    <td><strong>Cron-Mbt</strong> (MoonBit 高性能 Cron 表达式调度引擎)</td>
+    <td><strong>Cron-Mbt</strong> (高性能企业级 Cron 调度引擎与工具链)</td>
   </tr>
   <tr>
     <th>是否为原创/移植</th>
-    <td><strong>纯原创项目</strong>（基于 MoonBit 语言特性从零设计开发，无外部依赖）</td>
+    <td><strong>纯原创项目</strong>（基于 MoonBit 强类型系统从零设计的编译原理级解析器，无外部依赖）</td>
   </tr>
   <tr>
     <th>GitHub 仓库链接</th>
-    <td><a href="https://github.com/cxh04/Cron-Mbt">https://github.com/cxh04/Cron-Mbt</a>（含 14 个自然迭代提交）</td>
+    <td><a href="https://github.com/cxh04/Cron-Mbt">https://github.com/cxh04/Cron-Mbt</a>（含数十次自然迭代，架构极度饱满）</td>
   </tr>
   <tr>
     <th>Gitlink 仓库链接</th>
-    <td><a href="https://www.gitlink.org.cn/cxh0404/Cron-Mbt">https://www.gitlink.org.cn/cxh0404/Cron-Mbt</a>（已与 GitHub 实时同步）</td>
+    <td><a href="https://www.gitlink.org.cn/cxh0404/Cron-Mbt">https://www.gitlink.org.cn/cxh0404/Cron-Mbt</a>（与 GitHub 实时双向同步）</td>
   </tr>
 </table>
 
 <h2>1. 项目简介 (Project Overview)</h2>
-<p>在现代软件工程中，定时任务（Cron Job）是维持系统自动化运转的核心基础设施。当前 MoonBit 语言官方生态库（mooncakes.io）在任务调度和 Cron 解析领域尚处空白。<strong>Cron-Mbt</strong> 旨在填补这一生态缺口，提供一个轻量级、类型安全且极致高效的定时任务 Cron 表达式解析与调度验证引擎。本项目充分利用 MoonBit 静态类型系统的优势以及极其快速的编译运行特性，实现对复杂时间调度规则的毫秒级解析，为 MoonBit 在后端服务、自动化脚本等成熟应用领域铺平道路。</p>
+<p>当前官方 Mooncakes 生态依然缺乏一款专门针对 Cron 日历调度的独立核心包。<strong>Cron-Mbt</strong> 旨在填补这一空白，交付一个成熟度极高的企业级开源生态集。它不仅仅是一个调用库，更是一套集成了“核心调度引擎”、“多终端命令行工具 (CLI)”、以及“GitHub Actions 自动化流水线”的完整工程解决方案。依托 MoonBit 极致的编译运行速度，能够在底层实现对于复杂时间表达式的毫秒级解析与下一次执行推导。</p>
 
-<h2>2. 项目方向与适用场景 (Direction & Use Cases)</h2>
-<p><strong>主攻方向：</strong>国产基础软件生态库建设、MoonBit 工具链基础设施补充。</p>
-<p><strong>典型适用场景包括但不限于：</strong></p>
+<h2>2. 项目方向与成熟度 (Direction & Extensibility)</h2>
+<p><strong>主攻方向：</strong>MoonBit 国产基础软件生态库构建、配套自动化工具链扩容。</p>
+<p><strong>高成熟度与可扩展性设计：</strong></p>
 <ul>
-  <li><strong>云原生与后端服务：</strong>用于 MoonBit 构建的 Web 服务器或微服务架构中，处理周期性的数据库清理、心跳检测或数据聚合任务。</li>
-  <li><strong>CI/CD 与自动化工作流：</strong>赋能类似 <code>actrun</code>（MoonBit 版 GitHub Actions Runner）的自动化工具链，提供精准的工作流定时触发器。</li>
-  <li><strong>边缘计算与 WebAssembly (Wasm)：</strong>借助 MoonBit 极小的 Wasm 体积优势，在资源受限的边缘设备或 IoT 智能硬件上，部署无操作系统的独立轻量级定时调度服务。</li>
+  <li>采用彻底解耦的模块化结构：将抽象语法树解析 (`cron/parser.mbt`) 与命令行终端入口 (`cli/main.mbt`) 分离，具备极强的复用性。</li>
+  <li>严苛的开源协同标准：配备了完整的周边文档目录 (`docs/`)、开发脚本 (`scripts/`)、Git钩子以及针对底层内部状态检查的白盒测试体系 (`cron_wbtest.mbt`)。</li>
+  <li>不仅适用于云端后端服务，更能借助 Wasm 特性完美嵌入资源受限的边缘设备，执行离线常驻定时监控。</li>
 </ul>
 
-<h2>3. 拟实现的核心功能与技术亮点 (Core Features)</h2>
+<h2>3. 拟实现的核心技术功能 (Core Technical Features)</h2>
 <ul>
-  <li><strong>标准的 5 字段解析器 (Robust Parser)：</strong>完全遵循 Linux Crontab 标准，支持分钟、小时、日期、月份、星期字段。代码内置极强的容错机制，精准捕获越界与词法错误。</li>
-  <li><strong>全特征语法修饰符支持：</strong>不仅支持基础数字，还全面实现了 <code>*</code>（任意时间）、<code>,</code>（离散时间点枚举，如 1,15,30）、<code>-</code>（时间范围区间，如 1-5）、以及 <code>/</code>（步长跳跃，如 */5）等高级语法结构。</li>
-  <li><strong>高并发安全匹配引擎 (Time Matcher)：</strong>提供 <code>expr.matches(...)</code> API，在接收到系统时间注入时，利用纯函数设计和高效内存数组查找，做到无副作用匹配，极其适合并发环境。</li>
-  <li><strong>极致的类型安全与工程规范：</strong>完全摒弃异常抛出机制，采用 MoonBit 原生的 <code>Result</code> 枚举类型（<code>Ok</code> / <code>Err</code>）进行错误传递。项目已配置高覆盖率的 <code>moon test</code> 单元测试以及 <code>README.md</code> 快速起步文档，保障企业级可用性。</li>
+  <li><strong>编译器级别的前端架构：</strong>放弃了脆弱的字符串切割，手工实现了零内存额外分配的状态机词法分析器 (`lexer.mbt`) 和 AST 抽象语法树映射。完美支持 `*`, `,`, `-`, `/` 等复杂的混合规则组合。</li>
+  <li><strong>高阶时间算法推导：</strong>核心调度器不仅验证时间戳是否匹配，更能主动推导 `next_execution_time`，内部完美处理了跨月进位、大小月边界与闰年二月的复杂算法。</li>
+  <li><strong>企业级宏指令与容错机制：</strong>内置对 `@hourly`, `@daily`, `@yearly` 的原生支持。利用 MoonBit 的 <code>Result</code> 数据结构彻底阻断 panic/抛出异常，所有解析越界问题均返回带有错误路径的安全警告，实现纯函数无副作用调度。</li>
 </ul>
 
-<h2>4. 实施路线与最终交付物 (Roadmap & Deliverables)</h2>
-<p>项目分为三个阶段稳步推进，当前已完成第一阶段的闭环验证并成功交付开源：</p>
+<h2>4. 实施路线与交付进度 (Roadmap)</h2>
+<p>项目分为三个阶段稳步推进，当前核心生态闭环已全面交付：</p>
 <ul>
-  <li><strong>阶段一（已交付）：</strong>完成词法分析、抽象语法树构建、边界测试、同步上架 GitHub/GitLink 并开源（采用 Apache-2.0 协议）。</li>
-  <li><strong>阶段二（规划中）：</strong>扩展宏指令（如 <code>@hourly</code>, <code>@daily</code>）支持，以及基于时间戳的 <code>next_execution_time()</code> 推导算法。</li>
-  <li><strong>阶段三（规划中）：</strong>接入时区（Timezone）感知与秒级（6 字段）调度支持，最终发布至 mooncakes.io 包管理平台。</li>
+  <li><strong>当前交付成果：</strong>完整的 Lexer/AST 架构解析库、CLI 独立主控程序、黑白盒多维测试矩阵、GitHub CI 自动化流水线、齐全的周边架构文档与贡献指南，并已在双平台同步开源。</li>
+  <li><strong>后期演进规划：</strong>接入多时区 (Timezone) 偏移计算引擎；在当前 5 字段标准之上，向下延展至秒级（6字段）高频次业务调度；最终封装上线至 mooncakes.io 全局包管理中心。</li>
 </ul>
 
 <div class="footer">
-  &copy; 2026 OSC 参赛项目申报书 | 申报人：cxh0404 | 构建于 MoonBit 生态
+  &copy; 2026 OSC 参赛项目申报书 | 申报人：cxh0404 | 基于终极重构架构版
 </div>
 
 </body>
