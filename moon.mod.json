@@ -1,0 +1,7 @@
+{
+  "name": "cxh0404/cron_mbt",
+  "version": "0.1.0",
+  "repository": "https://github.com/cxh04/Cron-Mbt",
+  "license": "Apache-2.0",
+  "description": "A cron expression parser and scheduler for MoonBit."
+}
