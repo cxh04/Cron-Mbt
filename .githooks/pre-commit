@@ -1,0 +1,5 @@
+#!/bin/sh
+# pre-commit hook
+echo "Checking code format before commit..."
+moon fmt
+git add .
