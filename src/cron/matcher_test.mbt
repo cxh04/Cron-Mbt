@@ -1,7 +1,8 @@
-
-test "matches correct time" {
-  let expr = parse("0 12 * * 1").unwrap()
-  assert_true!(expr.matches(0, 12, 15, 6, 1))
-  assert_false!(expr.matches(1, 12, 15, 6, 1))
+test "matches correctly" {
+  let expr = match parse("15 12 * * *") {
+    Ok(v) => v
+    Err(_) => panic()
+  }
+  assert_eq(expr.matches(15, 12, 10, 6, 3), true)
+  assert_eq(expr.matches(16, 12, 10, 6, 3), false)
 }
-

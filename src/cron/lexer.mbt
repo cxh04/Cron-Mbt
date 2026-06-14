@@ -1,13 +1,14 @@
-pub enum Token {
+pub(all) enum Token {
   Asterisk
   Slash
   Dash
   Comma
   Number(Int)
+  Space
   EOF
 } derive(Show, Eq)
 
-pub struct Lexer {
+pub(all) struct Lexer {
   input : String
   mut pos : Int
 }
@@ -48,18 +49,29 @@ pub fn Lexer::next_token(self : Lexer) -> Result[Token, CronError] {
     }
     return Ok(Number(num))
   } else if ch == ' ' || ch == '\t' {
-    // Skip whitespace
-    self.pos += 1
-    return self.next_token()
+    while self.pos < self.input.length() && (self.input[self.pos] == ' ' || self.input[self.pos] == '\t') {
+      self.pos += 1
+    }
+    return Ok(Space)
   } else {
     return Err(InvalidFormat("Unexpected character in expression"))
   }
 }
 
+pub fn Lexer::peek_token(self : Lexer) -> Result[Token, CronError] {
+  let old_pos = self.pos
+  let tok = self.next_token()
+  self.pos = old_pos
+  tok
+}
+
 pub fn Lexer::lex_all(self : Lexer) -> Result[Array[Token], CronError] {
   let tokens = []
-  loop {
-    let tok = self.next_token()!
+  while true {
+    let tok = match self.next_token() {
+      Ok(t) => t
+      Err(e) => return Err(e)
+    }
     if tok == EOF {
       break
     }

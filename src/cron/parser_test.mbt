@@ -1,19 +1,19 @@
-
-test "parse valid cron" {
-  let expr = "0 12 * * 1,2,3"
-  let res = parse(expr)
-  match res {
-    Ok(_) => ()
-    Err(_) => fail!("should parse successfully")
+test "parser handles valid expressions" {
+  let expr = match parse("*/5 10-12 * * 1,2") {
+    Ok(v) => v
+    Err(_) => panic()
   }
+  assert_eq(expr.minutes.length(), 12)
 }
 
-test "parse invalid cron length" {
-  let expr = "0 12 * * 1,2,3 *"
-  let res = parse(expr)
-  match res {
-    Ok(_) => fail!("should fail with 6 fields")
+test "parser catches invalid expressions" {
+  match parse("*/5 10-12 * *") {
+    Ok(_) => panic()
+    Err(_) => ()
+  }
+  
+  match parse("*/5 10-12 * * 1,2 *") {
+    Ok(_) => panic()
     Err(_) => ()
   }
 }
-

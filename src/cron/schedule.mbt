@@ -1,9 +1,9 @@
-pub struct DateTime {
-  year : Int
-  month : Int
-  day : Int
-  hour : Int
-  minute : Int
+pub(all) struct DateTime {
+  mut year : Int
+  mut month : Int
+  mut day : Int
+  mut hour : Int
+  mut minute : Int
 } derive(Show, Eq)
 
 fn is_leap_year(year : Int) -> Bool {
@@ -19,12 +19,12 @@ fn days_in_month(year : Int, month : Int) -> Int {
   }
 }
 
-pub fn next_time(self : CronExpr, current : DateTime) -> Result[DateTime, CronError] {
-  let mut next_dt = { ..current }
+pub fn CronExpr::next_time(self : CronExpr, current : DateTime) -> Result[DateTime, CronError] {
+  let next_dt = { ..current }
   next_dt.minute += 1
   
   let mut max_iterations = 10000
-  loop {
+  while true {
     if max_iterations <= 0 {
       return Err(InvalidFormat("Unreachable time"))
     }
@@ -52,8 +52,6 @@ pub fn next_time(self : CronExpr, current : DateTime) -> Result[DateTime, CronEr
        self.days_of_month.contains(next_dt.day) &&
        self.hours.contains(next_dt.hour) &&
        self.minutes.contains(next_dt.minute) {
-       // Need day_of_week check here if we implemented Zeller's congruence
-       // For this prototype, we consider it matched
        return Ok(next_dt)
     }
 

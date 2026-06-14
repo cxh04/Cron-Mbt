@@ -1,18 +1,22 @@
 test "lexer parses numbers and symbols" {
   let lexer = Lexer::new("*/5 10-12 * * 1,2")
-  let tokens = lexer.lex_all().unwrap()
-  assert_eq!(tokens[0], Asterisk)
-  assert_eq!(tokens[1], Slash)
-  assert_eq!(tokens[2], Number(5))
-  assert_eq!(tokens[3], Number(10))
-  assert_eq!(tokens[4], Dash)
-  assert_eq!(tokens[5], Number(12))
+  let tokens = match lexer.lex_all() {
+    Ok(v) => v
+    Err(_) => panic()
+  }
+  assert_eq(tokens[0], Token::Asterisk)
+  assert_eq(tokens[1], Token::Slash)
+  assert_eq(tokens[2], Token::Number(5))
+  assert_eq(tokens[3], Token::Space) // we added space tokens!
+  assert_eq(tokens[4], Token::Number(10))
+  assert_eq(tokens[5], Token::Dash)
+  assert_eq(tokens[6], Token::Number(12))
 }
 
 test "lexer handles errors" {
   let lexer = Lexer::new("*/5 abc")
   match lexer.lex_all() {
-    Ok(_) => fail!("should fail on abc")
+    Ok(_) => panic()
     Err(_) => ()
   }
 }
