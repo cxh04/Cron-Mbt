@@ -8,7 +8,7 @@ fn contains(arr : Array[Int], val : Int) -> Bool {
   return false
 }
 
-pub fn matches(self : CronExpr, minute : Int, hour : Int, day_of_month : Int, month : Int, day_of_week : Int) -> Bool {
+pub fn CronExpr::matches(self : CronExpr, minute : Int, hour : Int, day_of_month : Int, month : Int, day_of_week : Int) -> Bool {
   contains(self.minutes, minute) &&
   contains(self.hours, hour) &&
   contains(self.days_of_month, day_of_month) &&
