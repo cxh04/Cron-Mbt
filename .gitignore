@@ -1,2 +1,6 @@
-target/
+_build/
 .moon/
+*.core
+*.wasm
+*.wasm.map
+*.mi
