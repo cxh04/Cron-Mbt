@@ -5,6 +5,7 @@ fn parse_base(lexer : Lexer) -> Result[AstNode, CronError] {
   }
   match tok {
     Asterisk => Ok(All(0, 0))
+    L => Ok(LastDay)
     Number(v) => {
       let peek = match lexer.peek_token() {
         Ok(t) => t
@@ -25,7 +26,7 @@ fn parse_base(lexer : Lexer) -> Result[AstNode, CronError] {
         _ => Ok(Value(v))
       }
     }
-    _ => Err(InvalidFormat("Expected number or asterisk"))
+    _ => Err(InvalidFormat("Expected number, L, or asterisk"))
   }
 }
 
@@ -120,6 +121,8 @@ pub fn parse(raw_expr : String) -> Result[CronExpr, CronError] {
     return Err(InvalidFormat("Cron expression has too many fields"))
   }
 
+  let has_last_day_of_month = days_of_month_node.has_last_day()
+
   let minutes = match minutes_node.to_array(0, 59) {
     Ok(arr) => arr
     Err(e) => return Err(e)
@@ -145,6 +148,7 @@ pub fn parse(raw_expr : String) -> Result[CronExpr, CronError] {
     minutes,
     hours,
     days_of_month,
+    has_last_day_of_month,
     months,
     days_of_week
   })

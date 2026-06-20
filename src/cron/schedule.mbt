@@ -6,24 +6,11 @@ pub(all) struct DateTime {
   mut minute : Int
 } derive(Show, Eq)
 
-fn is_leap_year(year : Int) -> Bool {
-  (year % 4 == 0 && year % 100 != 0) || (year % 400 == 0)
-}
-
-fn days_in_month(year : Int, month : Int) -> Int {
-  match month {
-    1 | 3 | 5 | 7 | 8 | 10 | 12 => 31
-    4 | 6 | 9 | 11 => 30
-    2 => if is_leap_year(year) { 29 } else { 28 }
-    _ => 31
-  }
-}
-
 pub fn CronExpr::next_time(self : CronExpr, current : DateTime) -> Result[DateTime, CronError] {
   let next_dt = { ..current }
   next_dt.minute += 1
   
-  let mut max_iterations = 10000
+  let mut max_iterations = 5_000_000
   while true {
     if max_iterations <= 0 {
       return Err(InvalidFormat("Unreachable time"))
@@ -48,8 +35,11 @@ pub fn CronExpr::next_time(self : CronExpr, current : DateTime) -> Result[DateTi
       next_dt.year += 1
     }
 
+    let matches_dom = self.days_of_month.contains(next_dt.day) ||
+                      (self.has_last_day_of_month && next_dt.day == dim)
+
     if self.months.contains(next_dt.month) &&
-       self.days_of_month.contains(next_dt.day) &&
+       matches_dom &&
        self.hours.contains(next_dt.hour) &&
        self.minutes.contains(next_dt.minute) {
        return Ok(next_dt)

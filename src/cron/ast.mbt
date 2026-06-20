@@ -2,9 +2,25 @@ pub(all) enum AstNode {
   All(Int, Int) // min, max bounds (0, 0) placeholder usually
   Value(Int)
   Range(Int, Int)
+  LastDay
   List(Array[AstNode])
   Step(AstNode, Int)
 } derive(Show, Eq)
+
+pub fn AstNode::has_last_day(self : AstNode) -> Bool {
+  match self {
+    LastDay => true
+    List(nodes) => {
+      let mut has = false
+      for n in nodes {
+        if n.has_last_day() { has = true }
+      }
+      has
+    }
+    Step(node, _) => node.has_last_day()
+    _ => false
+  }
+}
 
 pub fn AstNode::to_array(self : AstNode, min : Int, max : Int) -> Result[Array[Int], CronError] {
   let res = []
@@ -29,6 +45,7 @@ pub fn AstNode::to_array(self : AstNode, min : Int, max : Int) -> Result[Array[I
         res.push(i)
       }
     }
+    LastDay => ()
     List(nodes) => {
       for n in nodes {
         let arr = match n.to_array(min, max) {

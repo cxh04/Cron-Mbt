@@ -4,6 +4,7 @@ pub(all) enum Token {
   Dash
   Comma
   Number(Int)
+  L
   Space
   EOF
 } derive(Show, Eq)
@@ -35,6 +36,9 @@ pub fn Lexer::next_token(self : Lexer) -> Result[Token, CronError] {
   } else if ch == ',' {
     self.pos += 1
     return Ok(Comma)
+  } else if ch == 'L' {
+    self.pos += 1
+    return Ok(L)
   } else if ch >= '0' && ch <= '9' {
     let mut num = 0
     while self.pos < self.input.length() {

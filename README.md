@@ -27,6 +27,7 @@ simple parsing and matching:
 let expr = @cron.parse("*/5 8-10 * * 1-5").unwrap()
 
 let is_match = expr.matches(
+  year = 2026,
   minute = 15,
   hour = 9,
   day_of_month = 10,
