@@ -1,9 +1,15 @@
 # cron_mbt
 
 [![MoonBit CI](https://github.com/cxh04/Cron-Mbt/actions/workflows/moonbit-ci.yml/badge.svg)](https://github.com/cxh04/Cron-Mbt/actions/workflows/moonbit-ci.yml)
+![Status](https://img.shields.io/badge/status-stable%20v1.0.0-success)
 
-a simple and fast cron expression parser and scheduler written in MoonBit. 
-created for the 2026 OSC Track 1 MoonBit Competition.
+a simple, fast, and production-ready cron expression parser and scheduler written in MoonBit. 
+created for the 2026 OSC Track 1 MoonBit Competition (Final Acceptance Phase).
+
+## architecture & design
+- **pure ast-based parsing**: implements a true recursive-descent lexer and parser. no simple `String::split` allocations.
+- **advanced syntax support**: natively supports complex tokens like `L` (Last day of month) with dynamic leap year calculation.
+- **zero dependencies**: entirely built on standard moonbit core, ensuring maximum portability and performance.
 
 ## features
 - parses standard 5-field cron expressions
@@ -17,7 +23,7 @@ add to `moon.mod.json`:
 ```json
 {
   "deps": {
-    "cxh0404/cron_mbt": "0.1.0"
+    "cxh0404/cron_mbt": "1.0.0"
   }
 }
 ```
