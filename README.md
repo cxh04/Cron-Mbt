@@ -1,7 +1,7 @@
 # cron_mbt
 
 [![MoonBit CI](https://github.com/cxh04/Cron-Mbt/actions/workflows/moonbit-ci.yml/badge.svg)](https://github.com/cxh04/Cron-Mbt/actions/workflows/moonbit-ci.yml)
-![Status](https://img.shields.io/badge/status-stable%20v1.0.0-success)
+![Status](https://img.shields.io/badge/status-stable%20v0.1.0-success)
 
 a simple, fast, and production-ready cron expression parser and scheduler written in MoonBit. 
 created for the 2026 OSC Track 1 MoonBit Competition (Final Acceptance Phase).
@@ -23,7 +23,7 @@ add to `moon.mod.json`:
 ```json
 {
   "deps": {
-    "cxh0404/cron_mbt": "1.0.0"
+    "cxh04/cron_mbt": "0.1.0"
   }
 }
 ```
