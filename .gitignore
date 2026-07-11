@@ -4,3 +4,4 @@ _build/
 *.wasm
 *.wasm.map
 *.mi
+*.generated.mbti

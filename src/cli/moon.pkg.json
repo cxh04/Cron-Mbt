@@ -1,6 +1,0 @@
-{
-  "is_main": true,
-  "deps": {
-    "cxh0404/cron_mbt/cron": "0.1.0"
-  }
-}

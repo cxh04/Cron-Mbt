@@ -1,3 +1,4 @@
+///|
 test "lexer test" {
   let lexer = Lexer::new("15 *")
   let t1 = match lexer.next_token() {
