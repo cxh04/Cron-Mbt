@@ -36,6 +36,6 @@ From the current public OSC2026 site source:
 
 ## Remaining External Checks
 
-- Mooncakes live publication is currently blocked by an account mismatch:
-  module owner in `moon.mod` is `cxh0404`, while the current local `moon whoami` identity is `cxh04`
+- Mooncakes live publication should use the current Mooncakes owner:
+  module owner in `moon.mod` is `cxh04`, matching the current local `moon whoami` identity `cxh04`
 - GitLink still needs a final push so the public mirror catches up with the GitHub branch

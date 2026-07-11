@@ -44,7 +44,7 @@ Add the module to `moon.mod`:
 
 ```toml
 [deps]
-"cxh0404/cron_mbt" = "0.2.0"
+"cxh04/cron_mbt" = "0.2.0"
 ```
 
 ## Library Usage
@@ -120,7 +120,7 @@ the current local `moon 0.1.20260703` binary does not accept `moon info --deny-w
 
 ## Mooncakes Status
 
-- Module name: `cxh0404/cron_mbt`
+- Module name: `cxh04/cron_mbt`
 - Manifest version: `0.2.0`
 - `moon publish --dry-run` is expected to be used before publishing
 - publication should only be described as complete after Mooncakes confirms the package is live
