@@ -20,12 +20,11 @@ Checked on `2026-07-11`.
 ## Publication State
 
 - `moon publish --dry-run` now passes packaging and extracted-package verification
-- final publication is still blocked by Mooncakes identity mismatch:
-  `module config user = cxh0404`, `authenticated user = cxh04`
+- final publication should use the current Mooncakes identity:
+  `module config user = cxh04`, `authenticated user = cxh04`
 
 ## Next External Actions
 
-1. log in to Mooncakes with the `cxh0404` owner identity
-2. run `moon publish`
-3. push the synchronized `master` branch to GitHub and GitLink
-4. confirm the public Mooncakes package page can be queried with `cxh0404/cron_mbt`
+1. run `moon publish`
+2. push the synchronized `master` branch to GitHub and GitLink
+3. confirm the public Mooncakes package page can be queried with `cxh04/cron_mbt`

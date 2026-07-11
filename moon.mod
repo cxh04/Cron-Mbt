@@ -1,4 +1,4 @@
-name = "cxh0404/cron_mbt"
+name = "cxh04/cron_mbt"
 
 version = "0.2.0"
 
