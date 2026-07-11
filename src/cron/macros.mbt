@@ -1,3 +1,4 @@
+///|
 pub fn expand_macro(expr : String) -> String {
   match expr {
     "@yearly" => "0 0 1 1 *"

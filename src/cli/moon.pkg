@@ -1,0 +1,10 @@
+import {
+  "cxh0404/cron_mbt/src/cron",
+  "moonbitlang/core/argparse",
+  "moonbitlang/core/string",
+}
+
+options(
+  is_main: true,
+  deps: { "cxh0404/cron_mbt/src/cron": "0.2.0" },
+)

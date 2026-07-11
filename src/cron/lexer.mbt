@@ -1,3 +1,4 @@
+///|
 pub(all) enum Token {
   Asterisk
   Slash
@@ -5,19 +6,38 @@ pub(all) enum Token {
   Comma
   Number(Int)
   L
+  Question
   Space
   EOF
-} derive(Show, Eq)
+} derive(Debug, Eq)
 
+///|
+pub impl Show for Token with fn to_string(self : Token) -> String {
+  match self {
+    Asterisk => "Asterisk"
+    Slash => "Slash"
+    Dash => "Dash"
+    Comma => "Comma"
+    Number(value) => "Number(\{value})"
+    L => "L"
+    Question => "Question"
+    Space => "Space"
+    EOF => "EOF"
+  }
+}
+
+///|
 pub(all) struct Lexer {
   input : String
   mut pos : Int
 }
 
+///|
 pub fn Lexer::new(input : String) -> Lexer {
   { input, pos: 0 }
 }
 
+///|
 pub fn Lexer::next_token(self : Lexer) -> Result[Token, CronError] {
   if self.pos >= self.input.length() {
     return Ok(EOF)
@@ -39,6 +59,9 @@ pub fn Lexer::next_token(self : Lexer) -> Result[Token, CronError] {
   } else if ch == 'L' {
     self.pos += 1
     return Ok(L)
+  } else if ch == '?' {
+    self.pos += 1
+    return Ok(Question)
   } else if ch >= '0' && ch <= '9' {
     let mut num = 0
     while self.pos < self.input.length() {
@@ -53,7 +76,8 @@ pub fn Lexer::next_token(self : Lexer) -> Result[Token, CronError] {
     }
     return Ok(Number(num))
   } else if ch == ' ' || ch == '\t' {
-    while self.pos < self.input.length() && (self.input[self.pos] == ' ' || self.input[self.pos] == '\t') {
+    while self.pos < self.input.length() &&
+          (self.input[self.pos] == ' ' || self.input[self.pos] == '\t') {
       self.pos += 1
     }
     return Ok(Space)
@@ -62,6 +86,7 @@ pub fn Lexer::next_token(self : Lexer) -> Result[Token, CronError] {
   }
 }
 
+///|
 pub fn Lexer::peek_token(self : Lexer) -> Result[Token, CronError] {
   let old_pos = self.pos
   let tok = self.next_token()
@@ -69,6 +94,7 @@ pub fn Lexer::peek_token(self : Lexer) -> Result[Token, CronError] {
   tok
 }
 
+///|
 pub fn Lexer::lex_all(self : Lexer) -> Result[Array[Token], CronError] {
   let tokens = []
   while true {

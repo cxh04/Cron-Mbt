@@ -2,23 +2,36 @@ name: MoonBit CI
 
 on:
   push:
-    branches: [ "master" ]
+    branches: ["master"]
   pull_request:
-    branches: [ "master" ]
+    branches: ["master"]
 
 jobs:
-  build:
+  verify:
     runs-on: ubuntu-latest
     steps:
-    - uses: actions/checkout@v4
-    
-    - name: Install MoonBit Toolchain
-      run: |
-        curl -fsSL https://cli.moonbitlang.com/install/unix.sh | bash
-        echo "$HOME/.moon/bin" >> $GITHUB_PATH
-        
-    - name: Run MoonBit Tests
-      run: moon test
-      
-    - name: Build Library
-      run: moon build
+      - uses: actions/checkout@v4
+        with:
+          persist-credentials: false
+
+      - name: Install MoonBit 0.10.3
+        run: |
+          curl -fsSL https://cli.moonbitlang.com/install/unix.sh | bash -s -- --version 0.10.3
+          echo "$HOME/.moon/bin" >> "$GITHUB_PATH"
+
+      - name: Prepare registry
+        run: |
+          moon version --all
+          moon update
+
+      - name: moon check --deny-warn
+        run: moon check --deny-warn
+
+      - name: moon fmt --deny-warn
+        run: moon fmt --deny-warn
+
+      - name: moon info --deny-warn
+        run: moon info --deny-warn
+
+      - name: moon test --deny-warn
+        run: moon test --deny-warn
