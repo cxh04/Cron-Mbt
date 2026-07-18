@@ -14,9 +14,9 @@ jobs:
         with:
           persist-credentials: false
 
-      - name: Install MoonBit 0.10.3
+      - name: Install MoonBit toolchain
         run: |
-          curl -fsSL https://cli.moonbitlang.com/install/unix.sh | bash -s -- --version 0.10.3
+          curl -fsSL https://cli.moonbitlang.com/install/unix.sh | bash
           echo "$HOME/.moon/bin" >> "$GITHUB_PATH"
 
       - name: Prepare registry
@@ -31,10 +31,14 @@ jobs:
         run: moon build
 
       - name: moon fmt
-        run: moon fmt
+        run: |
+          moon fmt
+          git diff --exit-code
 
       - name: moon info
-        run: moon info
+        run: |
+          moon info
+          git diff --exit-code
 
       - name: moon test --deny-warn
         run: moon test --deny-warn

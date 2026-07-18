@@ -119,8 +119,9 @@ moon run src/cli next "30 9 * * 1" 2026 6 9 10 0
 pwsh ./scripts/verify_acceptance.ps1
 ```
 
-The CI workflow pins MoonBit `0.10.3` and runs `moon check --deny-warn`,
-`moon build`, `moon fmt`, `moon info`, and `moon test --deny-warn`.
+The CI workflow uses the official MoonBit installer, prints `moon version --all`,
+and runs `moon check --deny-warn`, `moon build`, `moon fmt`, `moon info`, and
+`moon test --deny-warn`.
 
 ## Mooncakes Status
 
