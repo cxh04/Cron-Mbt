@@ -17,16 +17,16 @@ Checked on `2026-07-19`.
 
 - GitHub default branch: `master`
 - GitLink default branch: `master`
-- GitHub release tag: `v0.2.0`
-- GitLink release tag: `v0.2.0`
+- GitHub release tag: `v0.2.1`
+- GitLink release tag: `v0.2.1`
 - GitHub sole contributor target: `cxh04`
 - GitLink sole contributor target: `cxh0404`
 
 ## Publication State
 
 - Mooncakes module: `cxh04/cron_mbt`
-- Published version: `0.2.0`
-- `moon publish --dry-run` validates packaging and reports a duplicate version once `0.2.0` is already live
+- Published version after this pass: `0.2.1`
+- `moon publish --dry-run` validates packaging before `moon publish`
 
 ## Next External Actions
 

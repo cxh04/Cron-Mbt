@@ -23,7 +23,7 @@ From the current public OSC2026 site source:
 - Core MoonBit source: `src/cron/*.mbt`, `src/cli/main.mbt`
 - GitHub Actions workflow: `.github/workflows/moonbit-ci.yml`
 - Validation script: `scripts/verify_acceptance.ps1`
-- Release tag: `v0.2.0`
+- Release tag: `v0.2.1`
 
 ## Hardening Completed In This Pass
 

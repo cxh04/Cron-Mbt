@@ -45,7 +45,7 @@ Add the module to `moon.mod`:
 
 ```toml
 [deps]
-"cxh04/cron_mbt" = "0.2.0"
+"cxh04/cron_mbt" = "0.2.1"
 ```
 
 ## Library Usage
@@ -125,9 +125,9 @@ The CI workflow pins MoonBit `0.10.3` and runs `moon check --deny-warn`,
 ## Mooncakes Status
 
 - Module name: `cxh04/cron_mbt`
-- Manifest version: `0.2.0`
+- Manifest version: `0.2.1`
 - `moon publish --dry-run` validates packaging before publication
-- version `0.2.0` has been published with the current Mooncakes owner `cxh04`
+- version `0.2.1` contains the OSC2026 acceptance feedback fixes
 
 ## Documents
 
