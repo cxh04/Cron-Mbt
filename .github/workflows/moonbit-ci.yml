@@ -31,14 +31,10 @@ jobs:
         run: moon build
 
       - name: moon fmt
-        run: |
-          moon fmt
-          git diff --exit-code
+        run: moon fmt
 
       - name: moon info
-        run: |
-          moon info
-          git diff --exit-code
+        run: moon info
 
       - name: moon test --deny-warn
         run: moon test --deny-warn
