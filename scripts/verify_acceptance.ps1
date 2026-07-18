@@ -35,18 +35,10 @@ Write-Host ""
 
 Write-Check "moon version" { moon version }
 Write-Check "moon check --deny-warn" { moon check --deny-warn }
+Write-Check "moon build" { moon build }
 Write-Check "moon fmt" { moon fmt }
+Write-Check "moon info" { moon info }
 Write-Check "moon test --deny-warn" { moon test --deny-warn }
-
-Write-Host "==> moon info" -ForegroundColor Cyan
-& moon info --deny-warn
-if ($LASTEXITCODE -ne 0) {
-  Write-Host "moon info --deny-warn is not supported by the current local toolchain; falling back to plain moon info." -ForegroundColor Yellow
-  & moon info
-  if ($LASTEXITCODE -ne 0) {
-    throw "moon info failed"
-  }
-}
 
 Write-Host "==> required files" -ForegroundColor Cyan
 @(

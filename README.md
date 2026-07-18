@@ -10,6 +10,7 @@
 
 - Standard 5-field cron expressions: minute, hour, day-of-month, month, day-of-week.
 - Core operators: `*`, `?`, `,`, `-`, `/`, and `L` for the last day of month.
+  `L` is accepted only in the day-of-month field; invalid placements return `Err`.
 - Macro aliases: `@yearly`, `@annually`, `@monthly`, `@weekly`, `@daily`, `@midnight`, `@hourly`.
 - Day matching semantics aligned with common cron behavior:
   when both day-of-month and day-of-week are constrained, either side may satisfy the schedule.
@@ -21,7 +22,7 @@
 The organizer feedback highlighted several concrete gaps:
 
 - deprecated warnings blocked `moon info` / `moon fmt` style checks
-- CI did not cover the required `check/fmt/info/test` stages
+- CI did not cover the required `check/build/fmt/info/test` stages
 - the CLI was mostly a placeholder
 - the next-trigger logic was still minute-by-minute brute force and missed weekday constraints
 - Mooncakes metadata was incomplete
@@ -44,7 +45,7 @@ Add the module to `moon.mod`:
 
 ```toml
 [deps]
-"cxh04/cron_mbt" = "0.2.0"
+"cxh04/cron_mbt" = "0.2.1"
 ```
 
 ## Library Usage
@@ -109,21 +110,24 @@ Local checks used during this hardening pass:
 
 ```bash
 moon check --deny-warn
+moon build
+moon fmt
+moon info
 moon test --deny-warn
 moon run src/cli parse "0 9 ? * 1-5"
 moon run src/cli next "30 9 * * 1" 2026 6 9 10 0
 pwsh ./scripts/verify_acceptance.ps1
 ```
 
-Note:
-the current local `moon 0.1.20260703` binary does not accept `moon info --deny-warn`, so the CI workflow pins MoonBit `0.10.3` and runs the exact command there.
+The CI workflow pins MoonBit `0.10.3` and runs `moon check --deny-warn`,
+`moon build`, `moon fmt`, `moon info`, and `moon test --deny-warn`.
 
 ## Mooncakes Status
 
 - Module name: `cxh04/cron_mbt`
-- Manifest version: `0.2.0`
-- `moon publish --dry-run` is expected to be used before publishing
-- publication should only be described as complete after Mooncakes confirms the package is live
+- Manifest version: `0.2.1`
+- `moon publish --dry-run` validates packaging before publication
+- version `0.2.1` contains the OSC2026 acceptance feedback fixes
 
 ## Documents
 

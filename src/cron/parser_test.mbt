@@ -48,3 +48,34 @@ test "parser normalizes sunday value 7 to 0" {
   assert_eq(expr.days_of_week.length(), 1)
   assert_eq(expr.days_of_week[0], 0)
 }
+
+///|
+fn assert_parse_error(raw : String) -> Unit {
+  match parse(raw) {
+    Ok(_) => panic()
+    Err(_) => ()
+  }
+}
+
+///|
+test "parser rejects L outside day of month field" {
+  assert_parse_error("L 0 * * *")
+  assert_parse_error("0 L * * *")
+  assert_parse_error("0 0 * L *")
+  assert_parse_error("0 0 * * L")
+}
+
+///|
+test "parser rejects invalid L step usage" {
+  assert_parse_error("0 0 L/2 * *")
+}
+
+///|
+test "parser returns errors for malformed cron expressions" {
+  assert_parse_error("0 0 32 * *")
+  assert_parse_error("0 0 * 13 *")
+  assert_parse_error("0 0 * * 8")
+  assert_parse_error("*/0 * * * *")
+  assert_parse_error("0 0 * * 1-0")
+  assert_parse_error("0 0 * * MON")
+}

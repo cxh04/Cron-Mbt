@@ -35,6 +35,23 @@ pub fn AstNode::has_last_day(self : AstNode) -> Bool {
 }
 
 ///|
+pub fn AstNode::has_stepped_last_day(self : AstNode) -> Bool {
+  match self {
+    Step(node, _) => node.has_last_day()
+    List(nodes) => {
+      let mut has = false
+      for n in nodes {
+        if n.has_stepped_last_day() {
+          has = true
+        }
+      }
+      has
+    }
+    _ => false
+  }
+}
+
+///|
 pub fn AstNode::to_array(
   self : AstNode,
   min : Int,

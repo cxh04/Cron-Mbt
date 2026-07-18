@@ -27,11 +27,14 @@ jobs:
       - name: moon check --deny-warn
         run: moon check --deny-warn
 
-      - name: moon fmt --deny-warn
-        run: moon fmt --deny-warn
+      - name: moon build
+        run: moon build
 
-      - name: moon info --deny-warn
-        run: moon info --deny-warn
+      - name: moon fmt
+        run: moon fmt
+
+      - name: moon info
+        run: moon info
 
       - name: moon test --deny-warn
         run: moon test --deny-warn

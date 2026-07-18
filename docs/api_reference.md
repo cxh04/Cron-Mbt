@@ -2,6 +2,8 @@
 
 ## `parse(expr: String) -> Result[CronExpr, CronError]`
 Parses a raw cron string. Supports macros (`@hourly`, etc).
+Invalid expressions return `Err(CronError)` instead of being accepted silently.
+The `L` token is only valid in the day-of-month field.
 
 ## `CronExpr::matches(minute, hour, day_of_month, month, day_of_week) -> Bool`
 Validates if a given time tuple fulfills the cron constraints.
