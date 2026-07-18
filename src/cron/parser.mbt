@@ -109,6 +109,29 @@ fn parse_days_of_week(node : AstNode) -> Result[Array[Int], CronError] {
 }
 
 ///|
+fn reject_last_day_outside_day_of_month(
+  node : AstNode,
+  field_name : String,
+) -> Result[Unit, CronError] {
+  if node.has_last_day() {
+    return Err(
+      InvalidFormat(
+        "L is only valid in the day-of-month field, not \{field_name}",
+      ),
+    )
+  }
+  Ok(())
+}
+
+///|
+fn validate_day_of_month_node(node : AstNode) -> Result[Unit, CronError] {
+  if node.has_stepped_last_day() {
+    return Err(InvalidFormat("L cannot be used with a step expression"))
+  }
+  Ok(())
+}
+
+///|
 pub fn parse(raw_expr : String) -> Result[CronExpr, CronError] {
   let expr = expand_macro(raw_expr)
   let lexer = Lexer::new(expr)
@@ -140,6 +163,27 @@ pub fn parse(raw_expr : String) -> Result[CronExpr, CronError] {
   }
   if remaining != EOF {
     return Err(InvalidFormat("Cron expression has too many fields"))
+  }
+
+  match reject_last_day_outside_day_of_month(minutes_node, "minute") {
+    Ok(_) => ()
+    Err(e) => return Err(e)
+  }
+  match reject_last_day_outside_day_of_month(hours_node, "hour") {
+    Ok(_) => ()
+    Err(e) => return Err(e)
+  }
+  match validate_day_of_month_node(days_of_month_node) {
+    Ok(_) => ()
+    Err(e) => return Err(e)
+  }
+  match reject_last_day_outside_day_of_month(months_node, "month") {
+    Ok(_) => ()
+    Err(e) => return Err(e)
+  }
+  match reject_last_day_outside_day_of_month(days_of_week_node, "day-of-week") {
+    Ok(_) => ()
+    Err(e) => return Err(e)
   }
 
   let has_last_day_of_month = days_of_month_node.has_last_day()
