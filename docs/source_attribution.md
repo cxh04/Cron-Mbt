@@ -8,6 +8,7 @@
 - the matcher and next-trigger calculation logic
 - the CLI structure and repository layout
 - the tests, CI workflow, and acceptance self-check script
+- the deterministic benchmark corpus and CLI baseline script
 
 ## What Was Referenced
 
