@@ -1,0 +1,3 @@
+import {
+  "cxh04/cron_mbt/src/cron",
+} for "test"

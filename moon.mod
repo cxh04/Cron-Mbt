@@ -1,6 +1,6 @@
 name = "cxh04/cron_mbt"
 
-version = "0.2.1"
+version = "0.2.2"
 
 repository = "https://github.com/cxh04/Cron-Mbt"
 
