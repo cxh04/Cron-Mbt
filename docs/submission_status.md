@@ -17,7 +17,7 @@ Checked on `2026-08-10`.
 
 - GitHub default branch: `master`
 - GitLink default branch: `master`
-- GitHub and GitLink tag: `v0.2.2` for this hardening pass
+- GitHub and GitLink tag: `v0.2.3` for this hardening pass
 - GitHub sole contributor target: `cxh04`
 - GitLink sole contributor target: `cxh0404`
 - Mooncakes module: `cxh04/cron_mbt`
@@ -25,4 +25,4 @@ Checked on `2026-08-10`.
 ## Publication State
 
 Version `0.2.1` was published before this hardening pass. Mooncakes versions
-are immutable; this pass will publish `0.2.2` after all checks pass.
+are immutable; this pass will publish `0.2.3` after all checks pass.

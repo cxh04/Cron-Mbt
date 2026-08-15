@@ -31,6 +31,47 @@ fn usage() -> @argparse.Command {
         @argparse.PositionArg("weekday"),
       ],
     ),
+    @argparse.Command(
+      "explain",
+      about="Print a canonical expression and an operational explanation",
+      positionals=[@argparse.PositionArg("expr")],
+    ),
+    @argparse.Command(
+      "next-many",
+      about="Print a bounded batch of next trigger times",
+      positionals=[
+        @argparse.PositionArg("expr"),
+        @argparse.PositionArg("year"),
+        @argparse.PositionArg("month"),
+        @argparse.PositionArg("day"),
+        @argparse.PositionArg("hour"),
+        @argparse.PositionArg("minute"),
+        @argparse.PositionArg("count"),
+      ],
+    ),
+    @argparse.Command(
+      "previous",
+      about="Print the previous trigger time before a timestamp",
+      positionals=[
+        @argparse.PositionArg("expr"),
+        @argparse.PositionArg("year"),
+        @argparse.PositionArg("month"),
+        @argparse.PositionArg("day"),
+        @argparse.PositionArg("hour"),
+        @argparse.PositionArg("minute"),
+      ],
+    ),
+    @argparse.Command(
+      "validate",
+      about="Validate a timestamp before submitting a schedule",
+      positionals=[
+        @argparse.PositionArg("year"),
+        @argparse.PositionArg("month"),
+        @argparse.PositionArg("day"),
+        @argparse.PositionArg("hour"),
+        @argparse.PositionArg("minute"),
+      ],
+    ),
   ])
 }
 
@@ -76,6 +117,17 @@ fn print_datetime(dt : @cron.DateTime) -> Unit {
 }
 
 ///|
+fn get_datetime(matches : @argparse.Matches) -> @cron.DateTime {
+  {
+    year: parse_int_arg(matches, "year"),
+    month: parse_int_arg(matches, "month"),
+    day: parse_int_arg(matches, "day"),
+    hour: parse_int_arg(matches, "hour"),
+    minute: parse_int_arg(matches, "minute"),
+  }
+}
+
+///|
 fn main {
   let matches = usage().parse() catch { _ => return }
   match matches.subcommand {
@@ -88,13 +140,7 @@ fn main {
     }
     Some(("next", sub)) => {
       let raw = get_required(sub, "expr")
-      let current : @cron.DateTime = {
-        year: parse_int_arg(sub, "year"),
-        month: parse_int_arg(sub, "month"),
-        day: parse_int_arg(sub, "day"),
-        hour: parse_int_arg(sub, "hour"),
-        minute: parse_int_arg(sub, "minute"),
-      }
+      let current = get_datetime(sub)
       match @cron.parse(raw) {
         Ok(expr) =>
           match expr.next_time(current) {
@@ -102,6 +148,43 @@ fn main {
             Err(err) => println(err.to_string())
           }
         Err(err) => println(err.to_string())
+      }
+    }
+    Some(("explain", sub)) =>
+      match @cron.parse(get_required(sub, "expr")) {
+        Ok(expr) => {
+          println("canonical=\{expr.canonical()}")
+          println("description=\{expr.describe()}")
+        }
+        Err(err) => println(err.to_string())
+      }
+    Some(("next-many", sub)) =>
+      match @cron.parse(get_required(sub, "expr")) {
+        Ok(expr) =>
+          match
+            expr.next_times(get_datetime(sub), parse_int_arg(sub, "count")) {
+            Ok(values) =>
+              for value in values {
+                print_datetime(value)
+              }
+            Err(err) => println(err.to_string())
+          }
+        Err(err) => println(err.to_string())
+      }
+    Some(("previous", sub)) =>
+      match @cron.parse(get_required(sub, "expr")) {
+        Ok(expr) =>
+          match expr.previous_time(get_datetime(sub)) {
+            Ok(value) => print_datetime(value)
+            Err(err) => println(err.to_string())
+          }
+        Err(err) => println(err.to_string())
+      }
+    Some(("validate", sub)) => {
+      let datetime = get_datetime(sub)
+      match datetime.validate() {
+        Ok(_) => println("valid")
+        Err(err) => println("invalid: \{err}")
       }
     }
     Some(("match", sub)) => {

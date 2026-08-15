@@ -6,5 +6,5 @@ import {
 
 options(
   is_main: true,
-  deps: { "cxh04/cron_mbt/src/cron": "0.2.2" },
+  deps: { "cxh04/cron_mbt/src/cron": "0.2.3" },
 )

@@ -33,7 +33,7 @@ The official site describes the following acceptance cues:
 - GitHub Actions workflow: `.github/workflows/moonbit-ci.yml`
 - Validation script: `scripts/verify_acceptance.ps1`
 - CLI baseline: `scripts/benchmark.ps1`
-- Release tag for this hardening pass: `v0.2.2`
+- Release tag for this hardening pass: `v0.2.3`
 
 ## Hardening Completed In This Pass
 
@@ -51,6 +51,13 @@ The official site describes the following acceptance cues:
   numbers mean.
 - Corrected the public API reference, module installation example, contributor
   workflow, and source-attribution notes.
+- Added operational datetime utilities, bounded occurrence windows, previous
+  occurrence queries, canonical expression rendering, schedule conflict
+  analysis, business-calendar filters, execution policies, observability
+  reports, and cross-platform CLI smoke tests.
+- Expanded the effective MoonBit implementation and regression corpus to
+  approximately 4,000 lines, with production APIs and boundary-focused tests
+  rather than mechanical repetition.
 
 ## External Checks Required Before Final Submission
 
@@ -58,6 +65,6 @@ The official site describes the following acceptance cues:
 - GitHub repository owner: `cxh04`
 - GitLink repository owner: `cxh0404`
 - Both public repositories must expose the synchronized `master` commit and
-  `v0.2.2` tag before submitting the final acceptance materials.
-- A new Mooncakes version must be published for any post-`0.2.1` code change,
+  `v0.2.3` tag before submitting the final acceptance materials.
+- A new Mooncakes version must be published for any post-`0.2.2` code change,
   because registry versions are immutable.

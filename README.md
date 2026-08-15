@@ -23,8 +23,12 @@ boundary.
   day-of-month and day-of-week are constrained, either side may satisfy the
   schedule.
 - Sunday normalization for both `0` and `7`.
-- A CLI that parses expressions, checks matches, and computes the next trigger
-  time.
+- Operational APIs for bounded occurrence windows, previous/next batches,
+  business calendars, conflict analysis, diagnostics, registry plans, and
+  execution-policy limits.
+- A CLI that parses expressions, checks matches, computes next/previous trigger
+  times, explains canonical schedules, validates timestamps, and prints bounded
+  batches.
 
 ## Why This Revision Matters
 
@@ -50,7 +54,7 @@ Add the module to your `moon.mod` import block:
 
 ```toml
 import {
-  "cxh04/cron_mbt@0.2.2",
+  "cxh04/cron_mbt@0.2.3",
 }
 ```
 
@@ -110,6 +114,19 @@ Match a timestamp:
 moon run src/cli match "15 10 * * *" 2026 6 10 10 15 3
 ```
 
+Explain or validate operational input:
+
+```bash
+moon run src/cli explain "0 0 L * *"
+moon run src/cli validate 2026 2 28 9 0
+moon run src/cli next-many "0 9 * * 1-5" 2026 8 7 10 0 5
+```
+
+The current repository contains approximately 4,000 lines of effective
+MoonBit implementation and regression code, including the CLI and acceptance
+matrix. The source is organized around reusable scheduling operations rather
+than generated or duplicated filler.
+
 ## Verification
 
 The local and CI checks are:
@@ -124,9 +141,13 @@ moon test benchmarks
 powershell -ExecutionPolicy Bypass -File ./scripts/verify_acceptance.ps1 -SkipMooncakes
 ```
 
-The CI workflow pins the official MoonBit installer to version 0.10.3, prints
+The CI workflow uses the official stable MoonBit installer, prints
 `moon version --all`, and runs the required `moon check`, `moon build`,
 `moon fmt`, `moon info`, and `moon test` stages on Ubuntu, macOS, and Windows.
+It also runs the CLI smoke suite on all three platforms. Local acceptance
+validation is kept compatible with MoonBit 0.10.3; the installer endpoint for
+that historical binary may return 403, so CI follows the currently available
+official stable channel.
 
 The deterministic acceptance corpus is under `benchmarks/`; it covers
 operations-style schedules, month ends, leap years, calendar transitions, and
@@ -137,9 +158,10 @@ portable performance claim.
 ## Mooncakes Status
 
 - Module name: `cxh04/cron_mbt`
-- Manifest version: `0.2.2`
+- Manifest version: `0.2.3`
 - `moon publish --dry-run` validates packaging before publication
-- version `0.2.2` contains the acceptance corpus, cross-platform CI, and
+- version `0.2.3` contains the acceptance corpus, cross-platform CI, CLI smoke
+  tests, business-calendar scheduling, and
   documentation fixes
 
 ## Documents

@@ -23,7 +23,6 @@ jobs:
       - name: Install MoonBit toolchain on Unix
         if: ${{ matrix.os != 'windows-latest' }}
         run: |
-          export MOONBIT_INSTALL_VERSION=0.10.3
           curl -fsSL https://cli.moonbitlang.com/install/unix.sh | bash
           echo "$HOME/.moon/bin" >> "$GITHUB_PATH"
 
@@ -31,7 +30,6 @@ jobs:
         if: ${{ matrix.os == 'windows-latest' }}
         shell: pwsh
         run: |
-          $env:MOONBIT_INSTALL_VERSION = "0.10.3"
           Set-ExecutionPolicy RemoteSigned -Scope CurrentUser
           irm https://cli.moonbitlang.com/install/powershell.ps1 | iex
           "C:\Users\runneradmin\.moon\bin" | Out-File -FilePath $env:GITHUB_PATH -Append
@@ -59,3 +57,13 @@ jobs:
 
       - name: moon test --target all --deny-warn
         run: moon test --target all --deny-warn
+
+      - name: CLI smoke tests on Unix
+        if: ${{ matrix.os != 'windows-latest' }}
+        shell: bash
+        run: bash scripts/cli_smoke.sh
+
+      - name: CLI smoke tests on Windows
+        if: ${{ matrix.os == 'windows-latest' }}
+        shell: pwsh
+        run: ./scripts/cli_smoke.ps1
