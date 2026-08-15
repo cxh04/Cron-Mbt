@@ -116,14 +116,22 @@ if ($unexpectedAuthors.Count -gt 0) {
 Write-Host "==> git remotes" -ForegroundColor Cyan
 $githubHead = Get-RemoteHead "GitHub" "https://github.com/cxh04/Cron-Mbt.git"
 $gitlinkHead = Get-RemoteHead "GitLink" "https://gitlink.org.cn/cxh0404/Cron-Mbt.git"
-$githubTag = git ls-remote "https://github.com/cxh04/Cron-Mbt.git" "refs/tags/$tag^{}"
-if ($LASTEXITCODE -ne 0 -or [string]::IsNullOrWhiteSpace($githubTag)) {
-  throw "GitHub is missing $tag"
+function Test-RemoteTag($label, $url, $tag) {
+  # Accept both lightweight tags (refs/tags/vX.Y.Z) and annotated tags
+  # (refs/tags/vX.Y.Z^{}). Both are valid release representations.
+  $tagLines = @(git ls-remote --tags $url "refs/tags/$tag" "refs/tags/$tag^{}")
+  if ($LASTEXITCODE -ne 0 -or $tagLines.Count -eq 0) {
+    throw "$label is missing $tag"
+  }
+  $hasDirect = $tagLines | Where-Object { $_ -match "\trefs/tags/$([regex]::Escape($tag))$" }
+  $hasPeeled = $tagLines | Where-Object { $_ -match "\trefs/tags/$([regex]::Escape($tag))\^\{\}$" }
+  if ($null -eq $hasDirect -and $null -eq $hasPeeled) {
+    throw "$label is missing $tag"
+  }
 }
-$gitlinkTag = git ls-remote "https://gitlink.org.cn/cxh0404/Cron-Mbt.git" "refs/tags/$tag^{}"
-if ($LASTEXITCODE -ne 0 -or [string]::IsNullOrWhiteSpace($gitlinkTag)) {
-  throw "GitLink is missing $tag"
-}
+
+Test-RemoteTag "GitHub" "https://github.com/cxh04/Cron-Mbt.git" $tag
+Test-RemoteTag "GitLink" "https://gitlink.org.cn/cxh0404/Cron-Mbt.git" $tag
 
 Write-Host ""
 Write-Host "Summary" -ForegroundColor Green
