@@ -124,7 +124,7 @@ moon test benchmarks
 powershell -ExecutionPolicy Bypass -File ./scripts/verify_acceptance.ps1 -SkipMooncakes
 ```
 
-The CI workflow uses the official MoonBit installer, prints
+The CI workflow pins the official MoonBit installer to version 0.10.3, prints
 `moon version --all`, and runs the required `moon check`, `moon build`,
 `moon fmt`, `moon info`, and `moon test` stages on Ubuntu, macOS, and Windows.
 

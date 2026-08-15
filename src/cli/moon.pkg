@@ -4,8 +4,7 @@ import {
   "moonbitlang/core/string",
 }
 
-pkgtype(kind: "executable")
-
 options(
+  is_main: true,
   deps: { "cxh04/cron_mbt/src/cron": "0.2.2" },
 )
