@@ -54,7 +54,7 @@ Add the module to your `moon.mod` import block:
 
 ```toml
 import {
-  "cxh04/cron_mbt@0.2.3",
+  "cxh04/cron_mbt@0.2.4",
 }
 ```
 
@@ -158,9 +158,9 @@ portable performance claim.
 ## Mooncakes Status
 
 - Module name: `cxh04/cron_mbt`
-- Manifest version: `0.2.3`
+- Manifest version: `0.2.4`
 - `moon publish --dry-run` validates packaging before publication
-- version `0.2.3` contains the acceptance corpus, cross-platform CI, CLI smoke
+- version `0.2.4` contains the acceptance corpus, cross-platform CI, CLI smoke
   tests, business-calendar scheduling, and
   documentation fixes
 

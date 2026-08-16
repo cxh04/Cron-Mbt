@@ -33,7 +33,7 @@ The official site describes the following acceptance cues:
 - GitHub Actions workflow: `.github/workflows/moonbit-ci.yml`
 - Validation script: `scripts/verify_acceptance.ps1`
 - CLI baseline: `scripts/benchmark.ps1`
-- Release tag for this hardening pass: `v0.2.3`
+- Release tag for this hardening pass: `v0.2.4`
 
 ## Hardening Completed In This Pass
 
@@ -65,6 +65,6 @@ The official site describes the following acceptance cues:
 - GitHub repository owner: `cxh04`
 - GitLink repository owner: `cxh0404`
 - Both public repositories must expose the synchronized `master` commit and
-  `v0.2.3` tag before submitting the final acceptance materials.
+  `v0.2.4` tag before submitting the final acceptance materials.
 - A new Mooncakes version must be published for any post-`0.2.2` code change,
   because registry versions are immutable.
